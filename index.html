@@ -6,953 +6,248 @@
   <title>BeatLicense — Entrar</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --text: #1d1d1f;
-      --muted: #86868b;
-      --muted2: #c7c7cc;
-      --border: #e8e8ed;
-      --bg: #f5f5f7;
-      --white: #ffffff;
-      --accent: #1d1d1f;
-      --blue: #0071e3;
-      --red: #ff3b30;
-      --green: #30d158;
-      --radius: 12px;
-      --radius-sm: 9px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      font-family: 'DM Sans', -apple-system, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      height: 100%;
-    }
-
-    /* ── SPLIT LAYOUT ── */
-    .split {
-      display: flex;
-      height: 100vh;
-    }
-
-    /* ── LEFT PANEL ── */
-    .left {
-      flex: 0 0 440px;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      padding: 0 52px;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .left-top {
-      position: absolute;
-      top: 32px;
-      left: 52px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo-icon {
-      width: 28px; height: 28px;
-      background: var(--text);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      color: white;
-    }
-
-    .logo-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
-    }
-
-    .left-bottom {
-      position: absolute;
-      bottom: 28px;
-      left: 52px;
-      right: 52px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .left-bottom-text {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .left-bottom-links {
-      display: flex;
-      gap: 16px;
-    }
-
-    .left-bottom-links a {
-      font-size: 12px;
-      color: var(--muted);
-      text-decoration: none;
-    }
-
-    .left-bottom-links a:hover { color: var(--text); }
-
-    /* ── FORM AREA ── */
-    .form-area {
-      width: 100%;
-      max-width: 320px;
-    }
-
-    .form-title {
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .form-sub {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
-      line-height: 1.5;
-    }
-
-    /* ── SOCIAL BUTTONS ── */
-    .social-btns {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .social-btn {
-      flex: 1;
-      height: 40px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      transition: all .15s;
-    }
-
-    .social-btn:hover {
-      border-color: #c7c7cc;
-      background: var(--bg);
-    }
-
-    .social-btn svg { flex-shrink: 0; }
-
-    /* ── DIVIDER ── */
-    .or-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .or-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .or-text {
-      font-size: 12px;
-      color: var(--muted2);
-      font-weight: 500;
-    }
-
-    /* ── FIELDS ── */
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .field label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--muted);
-    }
-
-    .field-wrap {
-      position: relative;
-    }
-
-    .field-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted2);
-      pointer-events: none;
-    }
-
-    .field input {
-      width: 100%;
-      height: 42px;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0 12px 0 38px;
-      font-size: 14px;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text);
-      outline: none;
-      transition: all .15s;
-    }
-
-    .field input:focus {
-      border-color: var(--accent);
-      background: white;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-    }
-
-    .field input::placeholder { color: var(--muted2); }
-
-    .field-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .field-row label { margin-bottom: 0; }
-
-    .forgot {
-      font-size: 12px;
-      color: var(--blue);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .forgot:hover { text-decoration: underline; }
-
-    /* ── PASSWORD TOGGLE ── */
-    .pw-toggle {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted2);
-      padding: 0;
-      display: flex;
-      align-items: center;
-    }
-
-    .pw-toggle:hover { color: var(--text); }
-
-    /* ── SUBMIT ── */
-    .btn-submit {
-      width: 100%;
-      height: 42px;
-      background: var(--text);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .15s;
-      margin-top: 4px;
-      position: relative;
-      overflow: hidden;
-      letter-spacing: -0.01em;
-    }
-
-    .btn-submit:hover:not(:disabled) {
-      background: #3a3a3c;
-      transform: translateY(-0.5px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-
-    .btn-submit:active:not(:disabled) { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-submit.loading { color: transparent; }
-
-    .spinner {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: none;
-    }
-
-    .btn-submit.loading .spinner { display: block; }
-    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
-
-    /* ── SIGNUP LINK ── */
-    .signup-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .signup-link a {
-      color: var(--text);
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .signup-link a:hover { text-decoration: underline; }
-
-    /* ── ERROR ── */
-    .error-msg {
-      background: #fff2f2;
-      border: 1px solid rgba(255,59,48,0.2);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 13px;
-      color: var(--red);
-      margin-bottom: 14px;
-      display: none;
-    }
-
-    .error-msg.show { display: block; }
-
-    /* ── SUCCESS ── */
-    .success-msg {
-      background: #f0fdf4;
-      border: 1px solid rgba(48,209,88,0.25);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 13px;
-      color: #1a9c3e;
-      margin-bottom: 14px;
-      display: none;
-    }
-
-    .success-msg.show { display: block; }
-
-    /* ── TABS: ENTRAR / CADASTRAR ── */
-    .auth-tabs {
-      display: flex;
-      gap: 0;
-      border-bottom: 1.5px solid var(--border);
-      margin-bottom: 24px;
-    }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1.5px;
-      transition: all .15s;
-    }
-
-    .auth-tab.active {
-      color: var(--text);
-      border-bottom-color: var(--text);
-    }
-
-    .auth-panel { display: none; }
-    .auth-panel.active { display: block; }
-
-    /* ── RIGHT PANEL ── */
-    .right {
-      flex: 1;
-      background: #1d1d1f;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Grid decorativo */
-    .right::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-
-    .right-glow {
-      position: absolute;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .right-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px;
-    }
-
-    /* MOCK DO PAINEL */
-    .panel-mock {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      width: 480px;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-      backdrop-filter: blur(20px);
-      margin-bottom: 32px;
-    }
-
-    .mock-bar {
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mock-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-    }
-
-    .mock-dot.r { background: rgba(255,59,48,0.5); }
-    .mock-dot.y { background: rgba(255,159,10,0.5); }
-    .mock-dot.g { background: rgba(48,209,88,0.5); }
-
-    .mock-title {
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
-      font-family: 'DM Mono', monospace;
-      margin-left: 8px;
-    }
-
-    .mock-body {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .mock-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .mock-block {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 8px;
-      padding: 12px 14px;
-      flex: 1;
-    }
-
-    .mock-label {
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 6px;
-      font-family: 'DM Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .mock-val {
-      font-size: 22px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.85);
-      letter-spacing: -0.04em;
-    }
-
-    .mock-val.green { color: rgba(48,209,88,0.85); }
-
-    .mock-field {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 7px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 8px;
-    }
-
-    .mock-field-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-    }
-
-    .mock-field-line {
-      height: 8px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.1);
-    }
-
-    .mock-btn-preview {
-      height: 36px;
-      background: rgba(255,255,255,0.9);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1d1d1f;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .mock-list-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .mock-list-item:last-child { border-bottom: none; }
-
-    .mock-avatar {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      flex-shrink: 0;
-    }
-
-    .mock-line-sm {
-      height: 7px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .mock-badge {
-      margin-left: auto;
-      background: rgba(48,209,88,0.15);
-      border: 1px solid rgba(48,209,88,0.2);
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 9px;
-      font-family: 'DM Mono', monospace;
-      color: rgba(48,209,88,0.7);
-      flex-shrink: 0;
-    }
-
-    .right-tagline {
-      font-size: 15px;
-      color: rgba(255,255,255,0.4);
-      font-weight: 400;
-      line-height: 1.6;
-    }
-
-    .right-tagline strong {
-      color: rgba(255,255,255,0.75);
-      font-weight: 500;
-    }
-
-    @media (max-width: 860px) {
-      .right { display: none; }
-      .left { flex: 1; padding: 0 32px; }
-    }
+    :root{--text:#1d1d1f;--muted:#86868b;--muted2:#c7c7cc;--border:#e8e8ed;--bg:#f5f5f7;--white:#fff;--blue:#0071e3;--red:#ff3b30;--green:#30d158;--radius-sm:9px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{font-family:'DM Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;height:100%;}
+    .split{display:flex;height:100vh;}
+    .left{flex:0 0 440px;background:#fff;display:flex;flex-direction:column;padding:0 52px;justify-content:center;position:relative;}
+    .left-top{position:absolute;top:32px;left:52px;}
+    .logo{display:flex;align-items:center;gap:8px;}
+    .logo-icon{width:28px;height:28px;background:#1d1d1f;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:white;}
+    .logo-name{font-size:15px;font-weight:600;color:#1d1d1f;letter-spacing:-0.01em;}
+    .left-bottom{position:absolute;bottom:28px;left:52px;right:52px;display:flex;justify-content:space-between;}
+    .left-bottom-text{font-size:12px;color:#86868b;}
+    .left-bottom-links{display:flex;gap:16px;}
+    .left-bottom-links a{font-size:12px;color:#86868b;text-decoration:none;}
+    .form-area{width:100%;max-width:320px;}
+    .auth-tabs{display:flex;border-bottom:1.5px solid #e8e8ed;margin-bottom:24px;}
+    .auth-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;font-weight:500;color:#86868b;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;}
+    .auth-tab.active{color:#1d1d1f;border-bottom-color:#1d1d1f;}
+    .auth-panel{display:none;}
+    .auth-panel.active{display:block;}
+    .social-btns{display:flex;gap:10px;margin-bottom:20px;}
+    .social-btn{flex:1;height:40px;border:1.5px solid #e8e8ed;border-radius:9px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#1d1d1f;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;}
+    .social-btn:hover{border-color:#c7c7cc;background:#f5f5f7;}
+    .or-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+    .or-line{flex:1;height:1px;background:#e8e8ed;}
+    .or-text{font-size:12px;color:#c7c7cc;font-weight:500;}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+    .field label{font-size:12px;font-weight:500;color:#86868b;}
+    .field-wrap{position:relative;}
+    .field-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#c7c7cc;pointer-events:none;}
+    .field input{width:100%;height:42px;background:#f5f5f7;border:1.5px solid #e8e8ed;border-radius:9px;padding:0 12px 0 38px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1d1d1f;outline:none;transition:all .15s;}
+    .field input:focus{border-color:#1d1d1f;background:white;box-shadow:0 0 0 3px rgba(0,0,0,.05);}
+    .field input::placeholder{color:#c7c7cc;}
+    .field-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+    .field-row label{margin-bottom:0;}
+    .forgot{font-size:12px;color:#0071e3;text-decoration:none;font-weight:500;}
+    .btn-submit{width:100%;height:42px;background:#1d1d1f;color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:4px;position:relative;overflow:hidden;}
+    .btn-submit:hover:not(:disabled){background:#3a3a3c;transform:translateY(-0.5px);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+    .btn-submit:disabled{opacity:.4;cursor:not-allowed;}
+    .btn-submit.loading{color:transparent;}
+    .spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+    .btn-submit.loading .spinner{display:block;}
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+    .signup-link{text-align:center;margin-top:20px;font-size:13px;color:#86868b;}
+    .signup-link a{color:#1d1d1f;font-weight:500;text-decoration:none;}
+    .error-msg{background:#fff2f2;border:1px solid rgba(255,59,48,.2);border-radius:9px;padding:10px 12px;font-size:13px;color:#ff3b30;margin-bottom:14px;display:none;}
+    .error-msg.show{display:block;}
+    .success-msg{background:#f0fdf4;border:1px solid rgba(48,209,88,.25);border-radius:9px;padding:10px 12px;font-size:13px;color:#1a9c3e;margin-bottom:14px;display:none;}
+    .success-msg.show{display:block;}
+    .right{flex:1;background:#1d1d1f;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .right::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;}
+    .right-content{position:relative;z-index:1;text-align:center;padding:40px;}
+    .panel-mock{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;width:480px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4);margin-bottom:32px;}
+    .mock-bar{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 16px;display:flex;align-items:center;gap:8px;}
+    .mock-dot{width:9px;height:9px;border-radius:50%;}
+    .mock-dot.r{background:rgba(255,59,48,.5);}
+    .mock-dot.y{background:rgba(255,159,10,.5);}
+    .mock-dot.g{background:rgba(48,209,88,.5);}
+    .mock-title{font-size:12px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;margin-left:8px;}
+    .mock-body{padding:20px;display:flex;flex-direction:column;gap:12px;}
+    .mock-row{display:flex;gap:10px;}
+    .mock-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;flex:1;}
+    .mock-label{font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;}
+    .mock-val{font-size:22px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:-.04em;}
+    .mock-val.green{color:rgba(48,209,88,.85);}
+    .mock-field{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:7px;height:34px;display:flex;align-items:center;padding:0 12px;gap:8px;}
+    .mock-field-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);}
+    .mock-field-line{height:8px;border-radius:4px;background:rgba(255,255,255,.1);}
+    .mock-btn-preview{height:36px;background:rgba(255,255,255,.9);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d1d1f;font-family:'DM Sans',sans-serif;}
+    .mock-list-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+    .mock-list-item:last-child{border-bottom:none;}
+    .mock-avatar{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.1);flex-shrink:0;}
+    .mock-line-sm{height:7px;border-radius:4px;background:rgba(255,255,255,.08);}
+    .mock-badge{margin-left:auto;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.2);border-radius:20px;padding:2px 8px;font-size:9px;font-family:'DM Mono',monospace;color:rgba(48,209,88,.7);flex-shrink:0;}
+    .right-tagline{font-size:15px;color:rgba(255,255,255,.4);font-weight:400;line-height:1.6;}
+    .right-tagline strong{color:rgba(255,255,255,.75);font-weight:500;}
+    @media(max-width:860px){.right{display:none;}.left{flex:1;padding:0 32px;}}
   </style>
 </head>
 <body>
-
 <div class="split">
-
-  <!-- ── LEFT ── -->
   <div class="left">
-
     <div class="left-top">
       <div class="logo">
-        <div class="logo-icon">♪</div>
+        <div class="logo-icon">&#9835;</div>
         <div class="logo-name">BeatLicense</div>
       </div>
     </div>
-
     <div class="form-area">
-
       <div class="auth-tabs">
         <div class="auth-tab active" onclick="showAuth('login')">Entrar</div>
         <div class="auth-tab" onclick="showAuth('signup')">Criar conta</div>
       </div>
-
-      <!-- ── LOGIN ── -->
       <div class="auth-panel active" id="panel-login">
-
         <div class="social-btns">
           <button class="social-btn" onclick="loginGoogle()">
             <svg width="16" height="16" viewBox="0 0 16 16"><path d="M15.68 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.3a3.66 3.66 0 01-1.59 2.4v2h2.57c1.5-1.38 2.4-3.42 2.4-5.86z" fill="#4285F4"/><path d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.57-2a4.8 4.8 0 01-7.18-2.52H.9v2.06A8 8 0 008 16z" fill="#34A853"/><path d="M3.54 9.54A4.8 4.8 0 013.3 8c0-.54.09-1.06.24-1.54V4.4H.9A8 8 0 000 8c0 1.3.31 2.52.9 3.6l2.64-2.06z" fill="#FBBC05"/><path d="M8 3.2c1.22 0 2.3.42 3.16 1.24l2.37-2.37A8 8 0 00.9 4.4L3.54 6.46A4.8 4.8 0 018 3.2z" fill="#EA4335"/></svg>
             Google
           </button>
-          <button class="social-btn" onclick="loginApple()">
-            <svg width="16" height="16" viewBox="0 0 16 16"><path d="M11.18 8.5c-.02-1.75 1.43-2.6 1.5-2.64-.82-1.2-2.1-1.36-2.55-1.38-1.08-.11-2.12.64-2.67.64-.56 0-1.41-.62-2.32-.6-1.19.02-2.28.7-2.9 1.76-1.24 2.15-.32 5.33.89 7.08.59.86 1.3 1.82 2.23 1.78.9-.03 1.23-.57 2.32-.57 1.08 0 1.38.57 2.32.55.96-.01 1.57-.86 2.15-1.73.68-.99.96-1.95.98-2-.02-.01-1.95-.75-1.95-2.89z" fill="currentColor"/><path d="M9.85 2.73C10.33 2.15 10.65 1.33 10.56.5c-.72.03-1.6.48-2.1 1.07-.46.52-.87 1.37-.76 2.17.8.06 1.61-.4 2.15-1.01z" fill="currentColor"/></svg>
-            Apple
-          </button>
+          <button class="social-btn">&#63743; Apple</button>
         </div>
-
-        <div class="or-divider">
-          <div class="or-line"></div>
-          <div class="or-text">ou entre com e-mail</div>
-          <div class="or-line"></div>
-        </div>
-
+        <div class="or-divider"><div class="or-line"></div><div class="or-text">ou entre com e-mail</div><div class="or-line"></div></div>
         <div class="error-msg" id="login-error"></div>
-
         <div class="field">
           <label>E-mail</label>
           <div class="field-wrap">
-            <div class="field-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M1 4.5l6 4 6-4" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg>
-            </div>
+            <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M1 4.5l6 4 6-4" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
             <input type="email" id="login-email" placeholder="seu@email.com">
           </div>
         </div>
-
         <div class="field">
-          <div class="field-row">
-            <label>Senha</label>
-            <a href="#" class="forgot" onclick="showForgot()">Esqueceu a senha?</a>
-          </div>
+          <div class="field-row"><label>Senha</label><a href="#" class="forgot">Esqueceu?</a></div>
           <div class="field-wrap">
-            <div class="field-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg>
-            </div>
-            <input type="password" id="login-pw" placeholder="••••••••">
-            <button class="pw-toggle" onclick="togglePw('login-pw', this)">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5S11.5 12 7.5 12 1 7.5 1 7.5z" stroke="#aeaeb2" stroke-width="1.2"/><circle cx="7.5" cy="7.5" r="1.8" stroke="#aeaeb2" stroke-width="1.2"/></svg>
-            </button>
+            <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <input type="password" id="login-pw" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
           </div>
         </div>
-
         <button class="btn-submit" id="btn-login" onclick="doLogin()">
-          <div class="spinner"></div>
-          Entrar
+          <div class="spinner"></div>Entrar
         </button>
-
-        <div class="signup-link">
-          Não tem conta? <a href="#" onclick="showAuth('signup')">Criar conta grátis</a>
-        </div>
-
+        <div class="signup-link">Nao tem conta? <a href="#" onclick="showAuth('signup')">Criar conta gratis</a></div>
       </div>
-
-      <!-- ── SIGNUP ── -->
       <div class="auth-panel" id="panel-signup">
-
         <div class="error-msg" id="signup-error"></div>
         <div class="success-msg" id="signup-success"></div>
-
         <div class="field">
-          <label>Nome artístico / Produtora</label>
+          <label>Nome artistico / Produtora</label>
           <div class="field-wrap">
-            <div class="field-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg>
-            </div>
+            <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
             <input type="text" id="signup-name" placeholder="Herick Beats">
           </div>
         </div>
-
         <div class="field">
           <label>E-mail</label>
           <div class="field-wrap">
-            <div class="field-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M1 4.5l6 4 6-4" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg>
-            </div>
+            <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#aeaeb2" stroke-width="1.2"/><path d="M1 4.5l6 4 6-4" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
             <input type="email" id="signup-email" placeholder="seu@email.com">
           </div>
         </div>
-
         <div class="field">
           <label>Senha</label>
           <div class="field-wrap">
-            <div class="field-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg>
-            </div>
-            <input type="password" id="signup-pw" placeholder="Mínimo 8 caracteres">
-            <button class="pw-toggle" onclick="togglePw('signup-pw', this)">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5S11.5 12 7.5 12 1 7.5 1 7.5z" stroke="#aeaeb2" stroke-width="1.2"/><circle cx="7.5" cy="7.5" r="1.8" stroke="#aeaeb2" stroke-width="1.2"/></svg>
-            </button>
+            <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <input type="password" id="signup-pw" placeholder="Minimo 8 caracteres">
           </div>
         </div>
-
         <button class="btn-submit" id="btn-signup" onclick="doSignup()">
-          <div class="spinner"></div>
-          Criar conta — 7 dias grátis
+          <div class="spinner"></div>Criar conta &mdash; 7 dias gratis
         </button>
-
-        <div class="signup-link">
-          Já tem conta? <a href="#" onclick="showAuth('login')">Entrar</a>
-        </div>
-
+        <div class="signup-link">Ja tem conta? <a href="#" onclick="showAuth('login')">Entrar</a></div>
       </div>
-
     </div>
-
     <div class="left-bottom">
-      <div class="left-bottom-text">© 2025 BeatLicense</div>
-      <div class="left-bottom-links">
-        <a href="#">Privacidade</a>
-        <a href="#">Termos</a>
-      </div>
+      <div class="left-bottom-text">&copy; 2025 BeatLicense</div>
+      <div class="left-bottom-links"><a href="#">Privacidade</a><a href="#">Termos</a></div>
     </div>
-
   </div>
-
-  <!-- ── RIGHT ── -->
   <div class="right">
-    <div class="right-glow"></div>
     <div class="right-content">
-
       <div class="panel-mock">
-        <div class="mock-bar">
-          <div class="mock-dot r"></div>
-          <div class="mock-dot y"></div>
-          <div class="mock-dot g"></div>
-          <div class="mock-title">beatlicense.app</div>
-        </div>
+        <div class="mock-bar"><div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div><div class="mock-title">beatlicense.app</div></div>
         <div class="mock-body">
-
           <div class="mock-row">
-            <div class="mock-block">
-              <div class="mock-label">Total licenças</div>
-              <div class="mock-val">48</div>
-            </div>
-            <div class="mock-block">
-              <div class="mock-label">Volume</div>
-              <div class="mock-val green">R$9.4k</div>
-            </div>
+            <div class="mock-block"><div class="mock-label">Total licencas</div><div class="mock-val">48</div></div>
+            <div class="mock-block"><div class="mock-label">Volume</div><div class="mock-val green">R$9.4k</div></div>
           </div>
-
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            <div class="mock-field">
-              <div class="mock-field-dot"></div>
-              <div class="mock-field-line" style="width:140px"></div>
-            </div>
-            <div class="mock-field">
-              <div class="mock-field-dot"></div>
-              <div class="mock-field-line" style="width:100px"></div>
-            </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="mock-field"><div class="mock-field-dot"></div><div class="mock-field-line" style="width:140px"></div></div>
+            <div class="mock-field"><div class="mock-field-dot"></div><div class="mock-field-line" style="width:100px"></div></div>
           </div>
-
-          <div class="mock-btn-preview">Gerar e enviar licença →</div>
-
-          <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">
-            <div class="mock-list-item">
-              <div class="mock-avatar"></div>
-              <div style="flex:1">
-                <div class="mock-line-sm" style="width:90px; margin-bottom:5px"></div>
-                <div class="mock-line-sm" style="width:60px; opacity:.5"></div>
-              </div>
-              <div class="mock-badge">ENVIADA</div>
-            </div>
-            <div class="mock-list-item">
-              <div class="mock-avatar"></div>
-              <div style="flex:1">
-                <div class="mock-line-sm" style="width:70px; margin-bottom:5px"></div>
-                <div class="mock-line-sm" style="width:50px; opacity:.5"></div>
-              </div>
-              <div class="mock-badge">ENVIADA</div>
-            </div>
+          <div class="mock-btn-preview">Gerar e enviar licenca &rarr;</div>
+          <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:10px">
+            <div class="mock-list-item"><div class="mock-avatar"></div><div style="flex:1"><div class="mock-line-sm" style="width:90px;margin-bottom:5px"></div><div class="mock-line-sm" style="width:60px;opacity:.5"></div></div><div class="mock-badge">ENVIADA</div></div>
+            <div class="mock-list-item"><div class="mock-avatar"></div><div style="flex:1"><div class="mock-line-sm" style="width:70px;margin-bottom:5px"></div><div class="mock-line-sm" style="width:50px;opacity:.5"></div></div><div class="mock-badge">ENVIADA</div></div>
           </div>
-
         </div>
       </div>
-
-      <div class="right-tagline">
-        <strong>Gere licenças profissionais</strong> em segundos.<br>
-        Assinatura digital, PDF automático, histórico permanente.
-      </div>
-
+      <div class="right-tagline"><strong>Gere licencas profissionais</strong> em segundos.<br>Assinatura digital, PDF automatico, historico permanente.</div>
     </div>
   </div>
-
 </div>
-
 <script>
-  // ── CONFIG SUPABASE ──
-  const SUPABASE_URL = 'https://jpurtyexwrtodknjheqq.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
+  const API = 'https://beatlicense-backend-production.up.railway.app';
+  const SB_URL = 'https://jpurtyexwrtodknjheqq.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
 
-  async function supabaseFetch(path, opts = {}) {
-    const res = await fetch(SUPABASE_URL + path, {
-      ...opts,
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        ...(opts.headers || {})
-      }
-    });
-    return res;
-  }
-
-  // ── TABS ──
   function showAuth(tab) {
-    document.querySelectorAll('.auth-tab').forEach((t,i) => {
-      t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='signup'&&i===1));
-    });
-    document.getElementById('panel-login').classList.toggle('active', tab==='login');
-    document.getElementById('panel-signup').classList.toggle('active', tab==='signup');
+    document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+    document.getElementById('panel-login').classList.toggle('active',tab==='login');
+    document.getElementById('panel-signup').classList.toggle('active',tab==='signup');
   }
 
-  // ── TOGGLE PW ──
-  function togglePw(id, btn) {
-    const input = document.getElementById(id);
-    const isText = input.type === 'text';
-    input.type = isText ? 'password' : 'text';
-    btn.style.color = isText ? '' : '#1d1d1f';
-  }
-
-  // ── FORGOT ──
-  function showForgot() {
-    const email = document.getElementById('login-email').value;
-    if (!email) { showError('login-error', 'Digite seu e-mail primeiro.'); return; }
-    // Supabase reset password
-    supabaseFetch('/auth/v1/recover', {
-      method: 'POST',
-      body: JSON.stringify({ email })
-    }).then(() => {
-      showError('login-error', '✓ Link de recuperação enviado para ' + email, true);
-    });
-  }
-
-  // ── GOOGLE ──
   function loginGoogle() {
-    supabaseFetch('/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(window.location.origin + '/painel'), {
-      method: 'GET'
-    }).then(r => {
-      if (r.url) window.location.href = r.url;
-    });
-    window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(window.location.href.replace('login','painel'));
+    window.location.href=SB_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(window.location.origin+'/painel.html');
   }
 
-  function loginApple() {
-    window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=apple&redirect_to=' + encodeURIComponent(window.location.href.replace('login','painel'));
-  }
-
-  // ── LOGIN ──
   async function doLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const pw    = document.getElementById('login-pw').value;
-    if (!email || !pw) { showError('login-error', 'Preencha e-mail e senha.'); return; }
-
-    setLoading('btn-login', true);
-    hideError('login-error');
-
+    const email=document.getElementById('login-email').value.trim();
+    const pw=document.getElementById('login-pw').value;
+    if(!email||!pw){showErr('login-error','Preencha e-mail e senha.');return;}
+    setLoad('btn-login',true);
     try {
-      const res  = await supabaseFetch('/auth/v1/token?grant_type=password', {
-        method: 'POST',
-        body: JSON.stringify({ email, password: pw })
-      });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error_description || data.msg || 'Erro ao entrar.');
-
-      // Salva sessão
-      localStorage.setItem('bl-session', JSON.stringify({
-        access_token: data.access_token,
-        email: data.user?.email,
-        name: data.user?.user_metadata?.name || email.split('@')[0]
-      }));
-
-      // Redireciona para painel
-      window.location.href = 'beatlicense-painel-v2.html';
-
-    } catch(err) {
-      showError('login-error', err.message);
-    } finally {
-      setLoading('btn-login', false);
-    }
+      const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw})});
+      const d=await r.json();
+      if(!r.ok) throw new Error(d.error_description||d.msg||'Credenciais invalidas.');
+      localStorage.setItem('bl-session',JSON.stringify({access_token:d.access_token,email:d.user?.email,name:d.user?.user_metadata?.name||email.split('@')[0]}));
+      window.location.href='painel.html';
+    } catch(e){showErr('login-error',e.message);}
+    finally{setLoad('btn-login',false);}
   }
 
-  // ── SIGNUP ──
   async function doSignup() {
-    const name  = document.getElementById('signup-name').value.trim();
-    const email = document.getElementById('signup-email').value.trim();
-    const pw    = document.getElementById('signup-pw').value;
-
-    if (!name)  { showError('signup-error', 'Digite seu nome artístico.'); return; }
-    if (!email) { showError('signup-error', 'Digite seu e-mail.'); return; }
-    if (pw.length < 8) { showError('signup-error', 'Senha precisa ter pelo menos 8 caracteres.'); return; }
-
-    setLoading('btn-signup', true);
-    hideError('signup-error');
-    hideError('signup-success');
-
+    const name=document.getElementById('signup-name').value.trim();
+    const email=document.getElementById('signup-email').value.trim();
+    const pw=document.getElementById('signup-pw').value;
+    if(!name){showErr('signup-error','Digite seu nome artistico.');return;}
+    if(!email){showErr('signup-error','Digite seu e-mail.');return;}
+    if(pw.length<8){showErr('signup-error','Senha precisa ter pelo menos 8 caracteres.');return;}
+    setLoad('btn-signup',true);
+    hideErr('signup-error');
     try {
-      const res  = await supabaseFetch('/auth/v1/signup', {
-        method: 'POST',
-        body: JSON.stringify({ email, password: pw, data: { name } })
-      });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error_description || data.msg || 'Erro ao criar conta.');
-
-      if (data.id) {
-        // Conta criada — pode precisar confirmar email
-        document.getElementById('signup-success').textContent =
-          '✓ Conta criada! Verifique seu e-mail para confirmar e depois entre.';
-        document.getElementById('signup-success').classList.add('show');
-        setTimeout(() => showAuth('login'), 3000);
-      }
-
-    } catch(err) {
-      showError('signup-error', err.message);
-    } finally {
-      setLoading('btn-signup', false);
-    }
+      const r=await fetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw,data:{name}})});
+      const d=await r.json();
+      if(!r.ok) throw new Error(d.error_description||d.msg||'Erro ao criar conta.');
+      const msgEl=document.getElementById('signup-success');
+      msgEl.textContent='Conta criada! Redirecionando para pagamento...';
+      msgEl.classList.add('show');
+      if(d.access_token) localStorage.setItem('bl-session',JSON.stringify({access_token:d.access_token,email,name}));
+      const sr=await fetch(API+'/criar-assinatura',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name})});
+      const sd=await sr.json();
+      if(sd.url){setTimeout(()=>window.location.href=sd.url,800);}
+      else throw new Error(sd.erro||'Erro ao gerar link de pagamento.');
+    } catch(e){showErr('signup-error',e.message);}
+    finally{setLoad('btn-signup',false);}
   }
 
-  // ── HELPERS ──
-  function showError(id, msg, isSuccess = false) {
-    const el = document.getElementById(id);
-    el.textContent = msg;
-    el.className = isSuccess ? 'success-msg show' : 'error-msg show';
-  }
+  function showErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.className=(id.includes('error')?'error-msg':'success-msg')+' show';}}
+  function hideErr(id){const el=document.getElementById(id);if(el){el.textContent='';el.classList.remove('show');}}
+  function setLoad(id,v){const b=document.getElementById(id);if(b){b.disabled=v;b.classList.toggle('loading',v);}}
 
-  function hideError(id) {
-    const el = document.getElementById(id);
-    if (el) { el.textContent = ''; el.classList.remove('show'); }
-  }
-
-  function setLoading(btnId, loading) {
-    const btn = document.getElementById(btnId);
-    btn.disabled = loading;
-    btn.classList.toggle('loading', loading);
-  }
-
-  // ── CHECK SESSION ──
-  const session = localStorage.getItem('bl-session');
-  if (session) {
-    // Já logado — redireciona
-    // window.location.href = 'beatlicense-painel-v2.html';
-  }
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('cancelado')){showErr('signup-error','Pagamento cancelado. Tente novamente.');showAuth('signup');}
+  if(localStorage.getItem('bl-session')) window.location.href='painel.html';
 </script>
-
 </body>
 </html>

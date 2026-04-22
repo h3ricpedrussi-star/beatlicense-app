@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BeatLicense — Entrar</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&subset=latin" rel="stylesheet">
   <style>
-    :root{--text:#1d1d1f;--muted:#86868b;--muted2:#c7c7cc;--border:#e8e8ed;--bg:#f5f5f7;--white:#fff;--blue:#0071e3;--red:#ff3b30;--green:#30d158;--radius-sm:9px;}
+    :root { --text:#1d1d1f; --muted:#86868b; --muted2:#aeaeb2; --border:#e8e8ed; --border-h:#c7c7cc; --bg:#f5f5f7; --white:#fff; --radius-sm:9px; }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html,body{font-family:'DM Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;height:100%;}
+    html,body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;height:100%;}
     .split{display:flex;height:100vh;}
-    .left{flex:0 0 440px;background:#fff;display:flex;flex-direction:column;padding:0 52px;justify-content:center;position:relative;}
+    .left{flex:0 0 440px;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 0 0 52px;position:relative;}
     .left-top{position:absolute;top:32px;left:52px;}
     .logo{display:flex;align-items:center;gap:8px;}
     .logo-icon{width:28px;height:28px;background:#1d1d1f;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:white;}
-    .logo-name{font-size:15px;font-weight:600;color:#1d1d1f;letter-spacing:-0.01em;}
+    .logo-name{font-size:15px;font-weight:600;color:#1d1d1f;}
     .left-bottom{position:absolute;bottom:28px;left:52px;right:52px;display:flex;justify-content:space-between;}
     .left-bottom-text{font-size:12px;color:#86868b;}
     .left-bottom-links{display:flex;gap:16px;}
@@ -23,26 +23,19 @@
     .auth-tabs{display:flex;border-bottom:1.5px solid #e8e8ed;margin-bottom:24px;}
     .auth-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;font-weight:500;color:#86868b;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;}
     .auth-tab.active{color:#1d1d1f;border-bottom-color:#1d1d1f;}
-    .auth-panel{display:none;}
-    .auth-panel.active{display:block;}
-    .social-btns{display:flex;gap:10px;margin-bottom:20px;}
-    .social-btn{flex:1;height:40px;border:1.5px solid #e8e8ed;border-radius:9px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#1d1d1f;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;}
-    .social-btn:hover{border-color:#c7c7cc;background:#f5f5f7;}
-    .or-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-    .or-line{flex:1;height:1px;background:#e8e8ed;}
-    .or-text{font-size:12px;color:#c7c7cc;font-weight:500;}
+    .auth-panel{display:none;} .auth-panel.active{display:block;}
     .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
     .field label{font-size:12px;font-weight:500;color:#86868b;}
     .field-wrap{position:relative;}
-    .field-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#c7c7cc;pointer-events:none;}
-    .field input{width:100%;height:42px;background:#f5f5f7;border:1.5px solid #e8e8ed;border-radius:9px;padding:0 12px 0 38px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1d1d1f;outline:none;transition:all .15s;}
+    .field-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#ccc;pointer-events:none;}
+    .field input{width:100%;height:42px;background:#f5f5f7;border:1.5px solid #e8e8ed;border-radius:9px;padding:0 12px 0 38px;font-size:14px;font-family:'DM Sans';color:#1d1d1f;outline:none;transition:all .15s;}
     .field input:focus{border-color:#1d1d1f;background:white;box-shadow:0 0 0 3px rgba(0,0,0,.05);}
     .field input::placeholder{color:#c7c7cc;}
     .field-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
     .field-row label{margin-bottom:0;}
     .forgot{font-size:12px;color:#0071e3;text-decoration:none;font-weight:500;}
-    .btn-submit{width:100%;height:42px;background:#1d1d1f;color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:4px;position:relative;overflow:hidden;}
-    .btn-submit:hover:not(:disabled){background:#3a3a3c;transform:translateY(-0.5px);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+    .btn-submit{width:100%;height:42px;background:#1d1d1f;color:white;border:none;border-radius:9px;font-family:'DM Sans';font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:4px;position:relative;overflow:hidden;}
+    .btn-submit:hover:not(:disabled){background:#3a3a3c;}
     .btn-submit:disabled{opacity:.4;cursor:not-allowed;}
     .btn-submit.loading{color:transparent;}
     .spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none;}
@@ -60,26 +53,24 @@
     .panel-mock{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;width:480px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4);margin-bottom:32px;}
     .mock-bar{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 16px;display:flex;align-items:center;gap:8px;}
     .mock-dot{width:9px;height:9px;border-radius:50%;}
-    .mock-dot.r{background:rgba(255,59,48,.5);}
-    .mock-dot.y{background:rgba(255,159,10,.5);}
-    .mock-dot.g{background:rgba(48,209,88,.5);}
-    .mock-title{font-size:12px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;margin-left:8px;}
+    .mock-dot.r{background:rgba(255,59,48,.5);} .mock-dot.y{background:rgba(255,159,10,.5);} .mock-dot.g{background:rgba(48,209,88,.5);}
+    .mock-title{font-size:12px;color:rgba(255,255,255,.3);font-family:monospace;margin-left:8px;}
     .mock-body{padding:20px;display:flex;flex-direction:column;gap:12px;}
     .mock-row{display:flex;gap:10px;}
     .mock-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;flex:1;}
-    .mock-label{font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;}
-    .mock-val{font-size:22px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:-.04em;}
+    .mock-label{font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;font-family:monospace;text-transform:uppercase;}
+    .mock-val{font-size:22px;font-weight:600;color:rgba(255,255,255,.85);}
     .mock-val.green{color:rgba(48,209,88,.85);}
     .mock-field{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:7px;height:34px;display:flex;align-items:center;padding:0 12px;gap:8px;}
     .mock-field-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);}
     .mock-field-line{height:8px;border-radius:4px;background:rgba(255,255,255,.1);}
-    .mock-btn-preview{height:36px;background:rgba(255,255,255,.9);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d1d1f;font-family:'DM Sans',sans-serif;}
+    .mock-btn-preview{height:36px;background:rgba(255,255,255,.9);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d1d1f;}
     .mock-list-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);}
     .mock-list-item:last-child{border-bottom:none;}
-    .mock-avatar{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.1);flex-shrink:0;}
+    .mock-avatar{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.1);}
     .mock-line-sm{height:7px;border-radius:4px;background:rgba(255,255,255,.08);}
-    .mock-badge{margin-left:auto;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.2);border-radius:20px;padding:2px 8px;font-size:9px;font-family:'DM Mono',monospace;color:rgba(48,209,88,.7);flex-shrink:0;}
-    .right-tagline{font-size:15px;color:rgba(255,255,255,.4);font-weight:400;line-height:1.6;}
+    .mock-badge{margin-left:auto;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.2);border-radius:20px;padding:2px 8px;font-size:9px;font-family:monospace;color:rgba(48,209,88,.7);}
+    .right-tagline{font-size:15px;color:rgba(255,255,255,.4);line-height:1.6;}
     .right-tagline strong{color:rgba(255,255,255,.75);font-weight:500;}
     @media(max-width:860px){.right{display:none;}.left{flex:1;padding:0 32px;}}
   </style>
@@ -99,14 +90,6 @@
         <div class="auth-tab" onclick="showAuth('signup')">Criar conta</div>
       </div>
       <div class="auth-panel active" id="panel-login">
-        <div class="social-btns">
-          <button class="social-btn" onclick="loginGoogle()">
-            <svg width="16" height="16" viewBox="0 0 16 16"><path d="M15.68 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.3a3.66 3.66 0 01-1.59 2.4v2h2.57c1.5-1.38 2.4-3.42 2.4-5.86z" fill="#4285F4"/><path d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.57-2a4.8 4.8 0 01-7.18-2.52H.9v2.06A8 8 0 008 16z" fill="#34A853"/><path d="M3.54 9.54A4.8 4.8 0 013.3 8c0-.54.09-1.06.24-1.54V4.4H.9A8 8 0 000 8c0 1.3.31 2.52.9 3.6l2.64-2.06z" fill="#FBBC05"/><path d="M8 3.2c1.22 0 2.3.42 3.16 1.24l2.37-2.37A8 8 0 00.9 4.4L3.54 6.46A4.8 4.8 0 018 3.2z" fill="#EA4335"/></svg>
-            Google
-          </button>
-          <button class="social-btn">&#63743; Apple</button>
-        </div>
-        <div class="or-divider"><div class="or-line"></div><div class="or-text">ou entre com e-mail</div><div class="or-line"></div></div>
         <div class="error-msg" id="login-error"></div>
         <div class="field">
           <label>E-mail</label>
@@ -122,9 +105,7 @@
             <input type="password" id="login-pw" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
           </div>
         </div>
-        <button class="btn-submit" id="btn-login" onclick="doLogin()">
-          <div class="spinner"></div>Entrar
-        </button>
+        <button class="btn-submit" id="btn-login" onclick="doLogin()"><div class="spinner"></div>Entrar</button>
         <div class="signup-link">Nao tem conta? <a href="#" onclick="showAuth('signup')">Criar conta gratis</a></div>
       </div>
       <div class="auth-panel" id="panel-signup">
@@ -151,9 +132,7 @@
             <input type="password" id="signup-pw" placeholder="Minimo 8 caracteres">
           </div>
         </div>
-        <button class="btn-submit" id="btn-signup" onclick="doSignup()">
-          <div class="spinner"></div>Criar conta &mdash; 7 dias gratis
-        </button>
+        <button class="btn-submit" id="btn-signup" onclick="doSignup()"><div class="spinner"></div>Criar conta &mdash; 7 dias gratis</button>
         <div class="signup-link">Ja tem conta? <a href="#" onclick="showAuth('login')">Entrar</a></div>
       </div>
     </div>
@@ -187,36 +166,32 @@
   </div>
 </div>
 <script>
-  const API = 'https://beatlicense-backend-production.up.railway.app';
-  const SB_URL = 'https://jpurtyexwrtodknjheqq.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
+  const API='https://beatlicense-backend-production.up.railway.app';
+  const SB_URL='https://jpurtyexwrtodknjheqq.supabase.co';
+  const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
 
-  function showAuth(tab) {
+  function showAuth(tab){
     document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
     document.getElementById('panel-login').classList.toggle('active',tab==='login');
     document.getElementById('panel-signup').classList.toggle('active',tab==='signup');
   }
 
-  function loginGoogle() {
-    window.location.href=SB_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(window.location.origin+'/painel.html');
-  }
-
-  async function doLogin() {
+  async function doLogin(){
     const email=document.getElementById('login-email').value.trim();
     const pw=document.getElementById('login-pw').value;
     if(!email||!pw){showErr('login-error','Preencha e-mail e senha.');return;}
     setLoad('btn-login',true);
-    try {
+    try{
       const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw})});
       const d=await r.json();
       if(!r.ok) throw new Error(d.error_description||d.msg||'Credenciais invalidas.');
       localStorage.setItem('bl-session',JSON.stringify({access_token:d.access_token,email:d.user?.email,name:d.user?.user_metadata?.name||email.split('@')[0]}));
       window.location.href='painel.html';
-    } catch(e){showErr('login-error',e.message);}
+    }catch(e){showErr('login-error',e.message);}
     finally{setLoad('btn-login',false);}
   }
 
-  async function doSignup() {
+  async function doSignup(){
     const name=document.getElementById('signup-name').value.trim();
     const email=document.getElementById('signup-email').value.trim();
     const pw=document.getElementById('signup-pw').value;
@@ -225,7 +200,7 @@
     if(pw.length<8){showErr('signup-error','Senha precisa ter pelo menos 8 caracteres.');return;}
     setLoad('btn-signup',true);
     hideErr('signup-error');
-    try {
+    try{
       const r=await fetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw,data:{name}})});
       const d=await r.json();
       if(!r.ok) throw new Error(d.error_description||d.msg||'Erro ao criar conta.');
@@ -237,7 +212,7 @@
       const sd=await sr.json();
       if(sd.url){setTimeout(()=>window.location.href=sd.url,800);}
       else throw new Error(sd.erro||'Erro ao gerar link de pagamento.');
-    } catch(e){showErr('signup-error',e.message);}
+    }catch(e){showErr('signup-error',e.message);}
     finally{setLoad('btn-signup',false);}
   }
 

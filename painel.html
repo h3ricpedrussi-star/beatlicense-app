@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BeatLicense — Painel</title>
+  <title>BeatLicense â Painel</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root{--text:#1d1d1f;--muted:#86868b;--muted2:#aeaeb2;--border:#e8e8ed;--border-h:#c7c7cc;--bg:#f5f5f7;--white:#fff;--green:#30d158;--green-bg:#f0fdf4;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);}
@@ -225,10 +225,42 @@
   const API = 'https://beatlicense-backend-production.up.railway.app';
   const LICS = { basic:'Basica', premium:'Premium', exclusive:'Exclusiva' };
 
-  // ── AUTH CHECK ──────────────────────────────────────────────────
+  // ââ AUTH CHECK ââââââââââââââââââââââââââââââââââââââââââââââââââ
   const sessionRaw = localStorage.getItem('bl-session');
-  if (!sessionRaw) { window.location.href = 'index.html'; }
-  const session = sessionRaw ? JSON.parse(sessionRaw) : {};
+  if (!sessionRaw) { window.location.href = 'index.html'; throw ''; }
+  const session = JSON.parse(sessionRaw);
+
+  // Verifica assinatura ativa no Supabase
+  (async function checkSub() {
+    const email = session.email;
+    if (!email) return;
+    // Se veio de pagamento aprovado, pula verificação (já está ativo)
+    const urlP = new URLSearchParams(window.location.search);
+    if (urlP.get('assinatura') === 'ativa') {
+      history.replaceState({}, '', window.location.pathname);
+      setTimeout(() => { try { toast('Assinatura ativa! Bem-vindo ao BeatLicense.', 'ok'); } catch(e){} }, 800);
+      return;
+    }
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/produtores?email=eq.' + encodeURIComponent(email) + '&select=plano,ativo', {
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      });
+      const data = await r.json();
+      const prod = data && data[0];
+      if (!prod || !prod.ativo || prod.plano !== 'pro') {
+        // Sem assinatura — redireciona para checkout
+        const sr = await fetch(API + '/criar-assinatura', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name: session.name || '' })
+        });
+        const sd = await sr.json();
+        window.location.href = sd.url || 'index.html';
+      }
+    } catch(e) {
+      console.error('Erro ao verificar assinatura:', e.message);
+    }
+  })();
   const params = new URLSearchParams(window.location.search);
   if (params.get('assinatura') === 'ativa') {
     toast('Assinatura ativa! Bem-vindo ao BeatLicense.', 'ok');
@@ -245,7 +277,7 @@
     window.location.href = 'index.html';
   }
 
-  // ── ESTADO ──────────────────────────────────────────────────────
+  // ââ ESTADO ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   let selLic = 'basic';
   let history_arr = JSON.parse(localStorage.getItem('bl-hist') || '[]');
   let cfg = JSON.parse(localStorage.getItem('bl-cfg') || '{}');
@@ -263,7 +295,7 @@
     document.getElementById('user-av').textContent = n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
   }
 
-  // ── TABS ────────────────────────────────────────────────────────
+  // ââ TABS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   function switchTab(t) {
     ['gerar','hist','cfg'].forEach(id => {
       document.getElementById('panel-'+id).classList.toggle('active', id===t);
@@ -273,7 +305,7 @@
     if (t==='hist') renderHist();
   }
 
-  // ── UTILS ───────────────────────────────────────────────────────
+  // ââ UTILS âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   function maskCPF(el){let v=el.value.replace(/\D/g,'');if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);if(v.length>7)v=v.slice(0,7)+'.'+v.slice(7);if(v.length>11)v=v.slice(0,11)+'-'+v.slice(11);el.value=v.slice(0,14);}
   function fmt(n){return 'R$ '+n.toFixed(2).replace('.',',');}
 
@@ -303,7 +335,7 @@
     } else {sum.style.display='none';}
   }
 
-  // ── GERAR ───────────────────────────────────────────────────────
+  // ââ GERAR âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   async function gerar() {
     const btn=document.getElementById('btn-gen');
     btn.disabled=true; btn.classList.add('loading');
@@ -340,7 +372,7 @@
     document.getElementById('suc-panel').classList.remove('show');
   }
 
-  // ── STATS ───────────────────────────────────────────────────────
+  // ââ STATS âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   function updStats(){
     const now=new Date();let m=0,v=0;
     history_arr.forEach(h=>{const d=new Date(h.date);if(d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear())m++;v+=h.price||0;});
@@ -350,7 +382,7 @@
     document.getElementById('nav-count').textContent=history_arr.length;
   }
 
-  // ── HISTORICO ───────────────────────────────────────────────────
+  // ââ HISTORICO âââââââââââââââââââââââââââââââââââââââââââââââââââ
   function renderHist(){
     const c=document.getElementById('hist-rows');
     if(!history_arr.length){c.innerHTML='<div class="empty">Nenhuma licenca gerada ainda.</div>';return;}
@@ -362,10 +394,10 @@
     }).join('');
   }
 
-  // ── TOAST ───────────────────────────────────────────────────────
+  // ââ TOAST âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),4000);}
 
-  // ── INIT ────────────────────────────────────────────────────────
+  // ââ INIT ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   updStats();
 </script>
 </body>

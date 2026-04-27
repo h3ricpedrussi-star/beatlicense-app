@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BeatLicense — Entrar</title>
+  <title>BeatLicense â Entrar</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&subset=latin" rel="stylesheet">
   <style>
     :root{--text:#1d1d1f;--muted:#86868b;--border:#e8e8ed;--bg:#f5f5f7;--white:#fff;--radius-sm:9px;}
@@ -161,7 +161,7 @@
             <input type="password" id="signup-pw" placeholder="Minimo 8 caracteres">
           </div>
         </div>
-        <button class="btn-submit" id="btn-signup" onclick="doSignup()"><div class="spinner"></div>Criar conta &mdash; 7 dias gratis</button>
+        <button class="btn-submit" id="btn-signup" onclick="doSignup()"><div class="spinner"></div>Criar conta</button>
         <div class="signup-link">Ja tem conta? <a href="#" onclick="showAuth('login')">Entrar</a></div>
       </div>
     </div>
@@ -240,7 +240,7 @@
   const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
   const API='https://beatlicense-backend-production.up.railway.app';
 
-  // ── DETECTA LINK DE RECOVERY ──────────────────────────────────────
+  // ââ DETECTA LINK DE RECOVERY ââââââââââââââââââââââââââââââââââââââ
   (function() {
     const hash = window.location.hash;
     if (!hash) return;
@@ -287,7 +287,7 @@
     finally { setLoad('btn-reset-pw', false); }
   }
 
-  // ── AUTH NORMAL ───────────────────────────────────────────────────
+  // ââ AUTH NORMAL âââââââââââââââââââââââââââââââââââââââââââââââââââ
   function showAuth(tab) {
     document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
     document.getElementById('panel-login').classList.toggle('active',tab==='login');

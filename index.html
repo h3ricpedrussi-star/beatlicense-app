@@ -6,7 +6,7 @@
   <title>BeatLicense — Entrar</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&subset=latin" rel="stylesheet">
   <style>
-    :root{--text:#1d1d1f;--muted:#86868b;--muted2:#aeaeb2;--border:#e8e8ed;--bg:#f5f5f7;--white:#fff;--radius-sm:9px;}
+    :root{--text:#1d1d1f;--muted:#86868b;--border:#e8e8ed;--bg:#f5f5f7;--white:#fff;--radius-sm:9px;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;height:100%;}
     .split{display:flex;height:100vh;}
@@ -20,6 +20,8 @@
     .left-bottom-links{display:flex;gap:16px;}
     .left-bottom-links a{font-size:12px;color:#86868b;text-decoration:none;}
     .form-area{width:100%;max-width:320px;}
+    .form-title{font-size:22px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;color:#1d1d1f;}
+    .form-sub{font-size:13px;color:#86868b;margin-bottom:24px;line-height:1.5;}
     .auth-tabs{display:flex;border-bottom:1.5px solid #e8e8ed;margin-bottom:24px;}
     .auth-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;font-weight:500;color:#86868b;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;}
     .auth-tab.active{color:#1d1d1f;border-bottom-color:#1d1d1f;}
@@ -34,7 +36,6 @@
     .field-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
     .field-row label{margin-bottom:0;}
     .forgot{font-size:12px;color:#0071e3;text-decoration:none;font-weight:500;cursor:pointer;background:none;border:none;font-family:'DM Sans';padding:0;}
-    .forgot:hover{text-decoration:underline;}
     .btn-submit{width:100%;height:42px;background:#1d1d1f;color:white;border:none;border-radius:9px;font-family:'DM Sans';font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:4px;position:relative;overflow:hidden;}
     .btn-submit:hover:not(:disabled){background:#3a3a3c;}
     .btn-submit:disabled{opacity:.4;cursor:not-allowed;}
@@ -48,11 +49,11 @@
     .error-msg.show{display:block;}
     .success-msg{background:#f0fdf4;border:1px solid rgba(48,209,88,.25);border-radius:9px;padding:10px 12px;font-size:13px;color:#1a9c3e;margin-bottom:14px;display:none;}
     .success-msg.show{display:block;}
-    /* MODAL ESQUECEU SENHA */
+    /* MODAL ESQUECEU */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s;}
     .modal-overlay.show{opacity:1;pointer-events:all;}
-    .modal{background:white;border-radius:14px;padding:28px 28px 24px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.15);}
-    .modal-title{font-size:16px;font-weight:700;margin-bottom:6px;color:#1d1d1f;}
+    .modal{background:white;border-radius:14px;padding:28px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+    .modal-title{font-size:16px;font-weight:700;margin-bottom:6px;}
     .modal-sub{font-size:13px;color:#86868b;margin-bottom:20px;line-height:1.5;}
     .modal-error{background:#fff2f2;border:1px solid rgba(255,59,48,.2);border-radius:9px;padding:9px 12px;font-size:12px;color:#ff3b30;margin-bottom:12px;display:none;}
     .modal-error.show{display:block;}
@@ -63,9 +64,12 @@
     .modal-btns{display:flex;gap:8px;}
     .modal-btn-cancel{flex:1;height:38px;background:none;border:1.5px solid #e8e8ed;border-radius:9px;font-family:'DM Sans';font-size:13px;font-weight:500;color:#86868b;cursor:pointer;}
     .modal-btn-send{flex:1;height:38px;background:#1d1d1f;border:none;border-radius:9px;font-family:'DM Sans';font-size:13px;font-weight:600;color:white;cursor:pointer;position:relative;overflow:hidden;}
-    .modal-btn-send:disabled{opacity:.4;cursor:not-allowed;}
+    .modal-btn-send:disabled{opacity:.4;}
     .modal-btn-send.loading{color:transparent;}
     .modal-btn-send.loading .spinner{display:block;}
+    /* TELA RESET */
+    .reset-screen{display:none;flex-direction:column;}
+    .reset-screen.active{display:flex;}
     /* RIGHT */
     .right{flex:1;background:#1d1d1f;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
     .right::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;}
@@ -104,7 +108,9 @@
         <div class="logo-name">BeatLicense</div>
       </div>
     </div>
-    <div class="form-area">
+
+    <!-- TELA DE LOGIN/CADASTRO NORMAL -->
+    <div class="form-area" id="auth-area">
       <div class="auth-tabs">
         <div class="auth-tab active" onclick="showAuth('login')">Entrar</div>
         <div class="auth-tab" onclick="showAuth('signup')">Criar conta</div>
@@ -159,11 +165,36 @@
         <div class="signup-link">Ja tem conta? <a href="#" onclick="showAuth('login')">Entrar</a></div>
       </div>
     </div>
+
+    <!-- TELA DE REDEFINIR SENHA -->
+    <div class="form-area reset-screen" id="reset-area">
+      <div class="form-title">&#128274; Nova senha</div>
+      <div class="form-sub">Escolha uma nova senha para sua conta BeatLicense.</div>
+      <div class="error-msg" id="reset-error"></div>
+      <div class="success-msg" id="reset-success"></div>
+      <div class="field">
+        <label>Nova senha</label>
+        <div class="field-wrap">
+          <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <input type="password" id="new-pw" placeholder="Minimo 8 caracteres">
+        </div>
+      </div>
+      <div class="field">
+        <label>Confirmar nova senha</label>
+        <div class="field-wrap">
+          <div class="field-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="6" width="8" height="6" rx="1" stroke="#aeaeb2" stroke-width="1.2"/><path d="M5 6V4.5a2 2 0 114 0V6" stroke="#aeaeb2" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <input type="password" id="new-pw2" placeholder="Repita a nova senha">
+        </div>
+      </div>
+      <button class="btn-submit" id="btn-reset-pw" onclick="salvarNovaSenha()"><div class="spinner"></div>Salvar nova senha</button>
+    </div>
+
     <div class="left-bottom">
       <div class="left-bottom-text">&copy; 2025 BeatLicense</div>
       <div class="left-bottom-links"><a href="#">Privacidade</a><a href="#">Termos</a></div>
     </div>
   </div>
+
   <div class="right">
     <div class="right-content">
       <div class="panel-mock">
@@ -199,91 +230,129 @@
     <input type="email" id="reset-email" placeholder="seu@email.com">
     <div class="modal-btns">
       <button class="modal-btn-cancel" onclick="fecharEsqueceu()">Cancelar</button>
-      <button class="modal-btn-send" id="btn-reset" onclick="enviarReset()"><div class="spinner"></div>Enviar link</button>
+      <button class="modal-btn-send" id="btn-send-reset" onclick="enviarReset()"><div class="spinner"></div>Enviar link</button>
     </div>
   </div>
 </div>
 
 <script>
-  const API='https://beatlicense-backend-production.up.railway.app';
   const SB_URL='https://jpurtyexwrtodknjheqq.supabase.co';
   const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwdXJ0eWV4d3J0b2RrbmpoZXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDkzMTksImV4cCI6MjA5MTkyNTMxOX0.dwY0MPqhLJT1FDmEYYax-RRl8ChB8sVYZLPj8rLe7Lw';
+  const API='https://beatlicense-backend-production.up.railway.app';
 
-  function showAuth(tab){
+  // ── DETECTA LINK DE RECOVERY ──────────────────────────────────────
+  (function() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const params = new URLSearchParams(hash.replace('#',''));
+    const type = params.get('type');
+    const token = params.get('access_token');
+    if (type === 'recovery' && token) {
+      // Limpa o hash da URL
+      history.replaceState(null, '', window.location.pathname);
+      // Salva o token para usar no reset
+      window._resetToken = token;
+      // Mostra tela de reset
+      document.getElementById('auth-area').style.display = 'none';
+      document.getElementById('reset-area').classList.add('active');
+    }
+  })();
+
+  async function salvarNovaSenha() {
+    const pw  = document.getElementById('new-pw').value;
+    const pw2 = document.getElementById('new-pw2').value;
+    if (pw.length < 8) { showErr('reset-error','Senha precisa ter pelo menos 8 caracteres.'); return; }
+    if (pw !== pw2)   { showErr('reset-error','As senhas nao coincidem.'); return; }
+    setLoad('btn-reset-pw', true);
+    hideErr('reset-error');
+    try {
+      const r = await fetch(SB_URL + '/auth/v1/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + window._resetToken
+        },
+        body: JSON.stringify({ password: pw })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.msg || d.error_description || 'Erro ao redefinir senha.');
+      document.getElementById('reset-success').textContent = 'Senha alterada! Redirecionando para o login...';
+      document.getElementById('reset-success').className = 'success-msg show';
+      setTimeout(() => {
+        document.getElementById('reset-area').classList.remove('active');
+        document.getElementById('auth-area').style.display = '';
+      }, 2500);
+    } catch(e) { showErr('reset-error', e.message); }
+    finally { setLoad('btn-reset-pw', false); }
+  }
+
+  // ── AUTH NORMAL ───────────────────────────────────────────────────
+  function showAuth(tab) {
     document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
     document.getElementById('panel-login').classList.toggle('active',tab==='login');
     document.getElementById('panel-signup').classList.toggle('active',tab==='signup');
   }
 
-  function abrirEsqueceu(){
-    const email=document.getElementById('login-email').value;
-    if(email) document.getElementById('reset-email').value=email;
-    document.getElementById('modal-error').className='modal-error';
-    document.getElementById('modal-success').className='modal-success';
+  function abrirEsqueceu() {
+    const email = document.getElementById('login-email').value;
+    if (email) document.getElementById('reset-email').value = email;
+    document.getElementById('modal-error').className = 'modal-error';
+    document.getElementById('modal-success').className = 'modal-success';
     document.getElementById('modal-esqueceu').classList.add('show');
-    setTimeout(()=>document.getElementById('reset-email').focus(),100);
+    setTimeout(() => document.getElementById('reset-email').focus(), 100);
   }
 
-  function fecharEsqueceu(){
+  function fecharEsqueceu() {
     document.getElementById('modal-esqueceu').classList.remove('show');
   }
 
-  async function enviarReset(){
-    const email=document.getElementById('reset-email').value.trim();
-    if(!email){showModalErr('Digite seu e-mail.');return;}
-    const btn=document.getElementById('btn-reset');
-    btn.disabled=true;btn.classList.add('loading');
-    try{
-      const r=await fetch(SB_URL+'/auth/v1/recover',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SB_KEY},
-        body:JSON.stringify({email,gotrue_meta_security:{}})
+  async function enviarReset() {
+    const email = document.getElementById('reset-email').value.trim();
+    if (!email) { showModalErr('Digite seu e-mail.'); return; }
+    const btn = document.getElementById('btn-send-reset');
+    btn.disabled = true; btn.classList.add('loading');
+    try {
+      const r = await fetch(SB_URL + '/auth/v1/recover', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','apikey':SB_KEY},
+        body: JSON.stringify({email})
       });
-      if(r.ok||r.status===200){
-        document.getElementById('modal-success').textContent='Link enviado! Verifique seu e-mail.';
-        document.getElementById('modal-success').className='modal-success show';
-        document.getElementById('modal-error').className='modal-error';
-        setTimeout(()=>fecharEsqueceu(),3000);
-      } else {
-        const d=await r.json();
-        showModalErr(d.msg||d.error_description||'Erro ao enviar. Tente novamente.');
-      }
-    }catch(e){showModalErr('Erro de conexao. Tente novamente.');}
-    finally{btn.disabled=false;btn.classList.remove('loading');}
+      document.getElementById('modal-success').textContent = 'Link enviado! Verifique seu e-mail.';
+      document.getElementById('modal-success').className = 'modal-success show';
+      document.getElementById('modal-error').className = 'modal-error';
+      setTimeout(() => fecharEsqueceu(), 3000);
+    } catch(e) { showModalErr('Erro de conexao. Tente novamente.'); }
+    finally { btn.disabled = false; btn.classList.remove('loading'); }
   }
 
-  function showModalErr(msg){
-    const el=document.getElementById('modal-error');
-    el.textContent=msg;el.className='modal-error show';
-  }
-
-  async function doLogin(){
-    const email=document.getElementById('login-email').value.trim();
-    const pw=document.getElementById('login-pw').value;
-    if(!email||!pw){showErr('login-error','Preencha e-mail e senha.');return;}
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pw = document.getElementById('login-pw').value;
+    if (!email||!pw) { showErr('login-error','Preencha e-mail e senha.'); return; }
     setLoad('btn-login',true);
-    try{
-      const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw})});
-      const d=await r.json();
-      if(!r.ok) throw new Error(d.error_description||d.msg||'Credenciais invalidas.');
+    try {
+      const r = await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw})});
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error_description||d.msg||'Credenciais invalidas.');
       localStorage.setItem('bl-session',JSON.stringify({access_token:d.access_token,email:d.user?.email,name:d.user?.user_metadata?.name||email.split('@')[0]}));
       window.location.href='painel.html';
-    }catch(e){showErr('login-error',e.message);}
-    finally{setLoad('btn-login',false);}
+    } catch(e) { showErr('login-error',e.message); }
+    finally { setLoad('btn-login',false); }
   }
 
-  async function doSignup(){
+  async function doSignup() {
     const name=document.getElementById('signup-name').value.trim();
     const email=document.getElementById('signup-email').value.trim();
     const pw=document.getElementById('signup-pw').value;
-    if(!name){showErr('signup-error','Digite seu nome artistico.');return;}
-    if(!email){showErr('signup-error','Digite seu e-mail.');return;}
-    if(pw.length<8){showErr('signup-error','Senha precisa ter pelo menos 8 caracteres.');return;}
-    setLoad('btn-signup',true);hideErr('signup-error');
-    try{
+    if (!name) { showErr('signup-error','Digite seu nome artistico.'); return; }
+    if (!email) { showErr('signup-error','Digite seu e-mail.'); return; }
+    if (pw.length<8) { showErr('signup-error','Senha precisa ter pelo menos 8 caracteres.'); return; }
+    setLoad('btn-signup',true); hideErr('signup-error');
+    try {
       const r=await fetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email,password:pw,data:{name}})});
       const d=await r.json();
-      if(!r.ok) throw new Error(d.error_description||d.msg||'Erro ao criar conta.');
+      if (!r.ok) throw new Error(d.error_description||d.msg||'Erro ao criar conta.');
       const msgEl=document.getElementById('signup-success');
       msgEl.textContent='Conta criada! Redirecionando para pagamento...';
       msgEl.classList.add('show');
@@ -292,17 +361,18 @@
       const sd=await sr.json();
       if(sd.url){setTimeout(()=>window.location.href=sd.url,800);}
       else throw new Error(sd.erro||'Erro ao gerar link de pagamento.');
-    }catch(e){showErr('signup-error',e.message);}
-    finally{setLoad('btn-signup',false);}
+    } catch(e) { showErr('signup-error',e.message); }
+    finally { setLoad('btn-signup',false); }
   }
 
   function showErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.className=(id.includes('error')?'error-msg':'success-msg')+' show';}}
   function hideErr(id){const el=document.getElementById(id);if(el){el.textContent='';el.classList.remove('show');}}
   function setLoad(id,v){const b=document.getElementById(id);if(b){b.disabled=v;b.classList.toggle('loading',v);}}
+  function showModalErr(msg){const el=document.getElementById('modal-error');el.textContent=msg;el.className='modal-error show';}
 
   const params=new URLSearchParams(window.location.search);
   if(params.get('cancelado')){showErr('signup-error','Pagamento cancelado. Tente novamente.');showAuth('signup');}
-  if(localStorage.getItem('bl-session')) window.location.href='painel.html';
+  if(localStorage.getItem('bl-session')&&!window._resetToken) window.location.href='painel.html';
 </script>
 </body>
 </html>

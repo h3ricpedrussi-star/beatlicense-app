@@ -246,7 +246,27 @@
       const r = await fetch(SB_URL + '/rest/v1/produtores?email=eq.' + encodeURIComponent(email) + '&select=plano,ativo', {
         headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
       });
-      const data = await r.json();
+      let data;
+        const ct = r.headers.get('content-type') || '';
+        if (ct.includes('application/pdf')) {
+          // Fallback: PDF binário direto (não deveria acontecer mais)
+          const blob = await r.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = 'licenca.pdf'; a.click();
+          data = {sucesso: true, mensagem: 'Licenca gerada e baixada!'};
+        } else {
+          data = await r.json();
+          // Se ClickSign falhou, backend enviou pdfBase64 — baixa automaticamente
+          if (data.pdfBase64) {
+            try {
+              const bytes = Uint8Array.from(atob(data.pdfBase64), c => c.charCodeAt(0));
+              const blob = new Blob([bytes], {type: 'application/pdf'});
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url; a.download = 'Licenca-' + (data.docId || 'gerada') + '.pdf'; a.click();
+            } catch(e) { console.error('Erro ao baixar PDF:', e); }
+          }
+        }
       const prod = data && data[0];
       if (!prod || !prod.ativo || prod.plano !== 'pro') {
         // Sem assinatura â redireciona para checkout

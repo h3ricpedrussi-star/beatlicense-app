@@ -176,10 +176,7 @@
             <div class="form-grid">
               <div class="field"><label>Nome completo</label><input type="text" id="buyer-name" placeholder="Joao Silva" oninput="upd()"></div>
               <div class="field"><label>E-mail</label><input type="email" id="buyer-email" placeholder="joao@email.com" oninput="upd()"></div>
-          <div class="field-group">
-            <label class="field-label">WhatsApp do comprador</label>
-            <input type="tel" id="buyer-phone" class="field-input" placeholder="(11) 99999-9999">
-          </div>
+          <div class="field"><label>WhatsApp do comprador</label><input type="tel" id="buyer-phone" placeholder="(11) 99999-9999" oninput="upd()"></div>
             </div>
             <div class="field" style="margin-bottom:14px;"><label>CPF</label><input type="text" id="buyer-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this);upd()"></div>
             <div class="summary" id="summary">
@@ -189,7 +186,6 @@
               <div><div class="sum-label">Valor</div><div class="sum-val grn" id="sum-price">-</div></div>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div style="font-size:12px;color:var(--muted);">PDF gerado e enviado ao comprador via ClickSign.</div>
               <button class="btn-gen" id="btn-gen" onclick="gerar()" disabled><div class="spinner"></div>Gerar e enviar licenca &rarr;</button>
             </div>
           </div>
@@ -197,7 +193,6 @@
         <div class="success-panel" id="suc-panel">
           <div class="suc-icon">&#10003;</div>
           <div class="suc-title">Licenca enviada!</div>
-          <div class="suc-sub" id="suc-msg">Licenca gerada e enviada para assinatura via ClickSign.</div>
           <button class="btn-novo" onclick="reset()">Gerar outra licenca</button>
         </div>
       </div>
@@ -260,7 +255,6 @@
           data = {sucesso: true, mensagem: 'Licenca gerada e baixada!'};
         } else {
           data = await r.json();
-          // Se ClickSign falhou, backend enviou pdfBase64 — baixa automaticamente
           if (data.pdfBase64) {
             try {
               const bytes = Uint8Array.from(atob(data.pdfBase64), c => c.charCodeAt(0));
@@ -383,25 +377,8 @@
       renderLicencas();
       form.reset();
       // Download do PDF
-      if(d.pdfBase64){
-        var pb=Uint8Array.from(atob(d.pdfBase64),function(x){return x.charCodeAt(0)});
-        var bl=new Blob([pb],{type:'application/pdf'});
-        var pu=URL.createObjectURL(bl);
-        var a=document.createElement('a');a.href=pu;a.download=(d.docId||'licenca')+'.pdf';a.click();
-        // WhatsApp
-        var ph=(d.buyerPhone||payload.buyerPhone||'').replace(/\D/g,'');
-        var nb=payload.beatName||'';
-        var nc=payload.buyerName||'';
-        if(ph){
-          var wamsg=encodeURIComponent('Oi '+nc+'! Segue a licenca do beat "'+nb+'" em anexo. Doc: '+(d.docId||'')+' | BeatLicense');
-          setTimeout(function(){
-            if(confirm('Licenca baixada com sucesso! Deseja abrir o WhatsApp para enviar ao comprador?')){
-              window.open('https://wa.me/55'+ph+'?text='+wamsg,'_blank');
-            }
-          },700);
-        }
-      }
-      toast('Licenca gerada! Doc: '+(d.docId||''), 'ok');
+      if(d.pdfBase64){try{var pb=Uint8Array.from(atob(d.pdfBase64),function(x){return x.charCodeAt(0);});var bl2=new Blob([pb],{type:'application/pdf'});var bu=URL.createObjectURL(bl2);var aa=document.createElement('a');aa.href=bu;aa.download=(d.docId||'licenca')+'.pdf';document.body.appendChild(aa);aa.click();document.body.removeChild(aa);var fone=(d.buyerPhone||'').replace(/[^0-9]/g,'');var bnome=document.getElementById('beat-name').value.trim();var cnome=document.getElementById('buyer-name').value.trim();if(fone&&fone.length>=10){var wmsg='Oi '+cnome+'! Segue a licenca do beat '+bnome+'. Doc: '+(d.docId||'')+' - BeatLicense';var wurl='https://wa.me/55'+fone+'?text='+encodeURIComponent(wmsg);setTimeout(function(){if(confirm('PDF baixado! Quer abrir o WhatsApp para enviar ao comprador?')){window.open(wurl,'_blank');}},800);}else if(!fone){toast('Licenca baixada! Envie o PDF ao comprador.','ok');};}catch(e2){console.error('pdf err:',e2);}}
+          toast('Licenca gerada! Doc: '+(d.docId||''), 'ok');
     finally{btn.classList.remove('loading');}
   }
 

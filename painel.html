@@ -176,6 +176,10 @@
             <div class="form-grid">
               <div class="field"><label>Nome completo</label><input type="text" id="buyer-name" placeholder="Joao Silva" oninput="upd()"></div>
               <div class="field"><label>E-mail</label><input type="email" id="buyer-email" placeholder="joao@email.com" oninput="upd()"></div>
+          <div class="field-group">
+            <label class="field-label">WhatsApp do comprador</label>
+            <input type="tel" id="buyer-phone" class="field-input" placeholder="(11) 99999-9999">
+          </div>
             </div>
             <div class="field" style="margin-bottom:14px;"><label>CPF</label><input type="text" id="buyer-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this);upd()"></div>
             <div class="summary" id="summary">
@@ -365,6 +369,7 @@
       buyerName:document.getElementById('buyer-name').value.trim(),
       buyerCpf:document.getElementById('buyer-cpf').value.trim(),
       buyerEmail:document.getElementById('buyer-email').value.trim(),
+      buyerPhone:(document.getElementById('buyer-phone')||{value:''}).value.trim(),
       beatName:document.getElementById('beat-name').value.trim(),
       producerName, licenseType:selLic,
       price:parseFloat(document.getElementById('price').value)
@@ -373,14 +378,30 @@
       const r=await fetch(API+'/gerar-licenca',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const d=await r.json();
       if(!r.ok) throw new Error(d.erro||'Erro ao gerar.');
-      const e={...payload,docId:d.docId||'BL-'+Date.now(),date:new Date().toISOString(),status:d.docKey?'sent':'gen'};
-      history_arr.unshift(e);
-      localStorage.setItem('bl-hist',JSON.stringify(history_arr));
-      updStats();
-      document.getElementById('suc-msg').textContent=d.mensagem||('Licenca enviada para '+payload.buyerEmail+' via ClickSign!');
-      document.getElementById('form-area').style.display='none';
-      document.getElementById('suc-panel').classList.add('show');
-    } catch(e){toast(e.message,'err');btn.disabled=false;}
+      const e={...payload,docId:d.docId||'BL-'+Date.now(),date:new Date().toISOString(),status:'sent',docKey:null};
+      licencas.unshift(e);
+      renderLicencas();
+      form.reset();
+      // Download do PDF
+      if(d.pdfBase64){
+        var pb=Uint8Array.from(atob(d.pdfBase64),function(x){return x.charCodeAt(0)});
+        var bl=new Blob([pb],{type:'application/pdf'});
+        var pu=URL.createObjectURL(bl);
+        var a=document.createElement('a');a.href=pu;a.download=(d.docId||'licenca')+'.pdf';a.click();
+        // WhatsApp
+        var ph=(d.buyerPhone||payload.buyerPhone||'').replace(/\D/g,'');
+        var nb=payload.beatName||'';
+        var nc=payload.buyerName||'';
+        if(ph){
+          var wamsg=encodeURIComponent('Oi '+nc+'! Segue a licenca do beat "'+nb+'" em anexo. Doc: '+(d.docId||'')+' | BeatLicense');
+          setTimeout(function(){
+            if(confirm('Licenca baixada com sucesso! Deseja abrir o WhatsApp para enviar ao comprador?')){
+              window.open('https://wa.me/55'+ph+'?text='+wamsg,'_blank');
+            }
+          },700);
+        }
+      }
+      toast('Licenca gerada! Doc: '+(d.docId||''), 'ok');
     finally{btn.classList.remove('loading');}
   }
 

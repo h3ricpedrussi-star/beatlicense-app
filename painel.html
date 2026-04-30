@@ -1125,64 +1125,155 @@
   }
 
   // ── GERAR ────────────────────────────────────
-  async function gerarLicenca() {
+  async function gerar() {
+    const beatName     = document.getElementById('beat-name').value.trim();
+    const producerName = document.getElementById('producer-name').value.trim();
+    const priceRaw     = parseFloat(document.getElementById('price').value) || 0;
+    const buyerName    = document.getElementById('buyer-name').value.trim();
+    const buyerEmail   = document.getElementById('buyer-email').value.trim();
+    const buyerCpf     = document.getElementById('buyer-cpf').value.trim();
+    const buyerPhone   = (document.getElementById('buyer-phone') || {value:''}).value.trim();
+    const licTypes     = {basic:'Basica (ate 50k streams)', premium:'Premium (ate 500k streams)', exclusive:'Exclusiva (uso ilimitado)'};
+    const licName      = licTypes[selLic] || 'Basica';
+    const hoje         = new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+    const docId        = 'BL-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2,10).toUpperCase();
+
     const btn = document.getElementById('btn-gen');
     btn.disabled = true;
-    btn.classList.add('loading');
-
-    const api = config.api || DEFAULT_API;
-    const payload = {
-      buyerName:    document.getElementById('buyer-name').value.trim(),
-      buyerCpf:     document.getElementById('buyer-cpf').value.trim(),
-      buyerEmail:   document.getElementById('buyer-email').value.trim(),
-      beatName:     document.getElementById('beat-name').value.trim(),
-      producerName: document.getElementById('producer-name').value.trim(),
-      licenseType:  selectedLic,
-      price:        parseFloat(document.getElementById('price').value)
-    };
+    btn.innerHTML = '<div class="spinner"></div> Gerando...';
 
     try {
-      const res  = await fetch(api + '/gerar-licenca', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.erro || 'Erro ao gerar');
+      // Carrega jsPDF se nao estiver disponivel
+      if(!window.jspdf) {
+        await new Promise((res, rej) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const W = 210, ml = 20, pw = W - 40;
 
-      const entry = { ...payload, docId: data.docId || 'BL-'+Date.now(), date: new Date().toISOString(), status: data.docKey ? 'sent' : 'generated' };
-      history.unshift(entry);
-      localStorage.setItem('bl-hist', JSON.stringify(history));
-      updateStats();
+      // ── Header roxo ──
+      doc.setFillColor(83, 74, 183);
+      doc.rect(0, 0, W, 28, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFontSize(18); doc.setFont('helvetica','bold');
+      doc.text('BeatLicense', ml, 16);
+      doc.setFontSize(9); doc.setFont('helvetica','normal');
+      doc.text('Licenciamento Musical Digital', ml, 23);
+      doc.setFontSize(8);
+      doc.text(docId + '  |  ' + hoje, W-ml, 23, {align:'right'});
 
-      // Download PDF e WhatsApp
-        if(data.pdfBase64){
-          try{
-            var pb=Uint8Array.from(atob(data.pdfBase64),function(x){return x.charCodeAt(0);});
-            var bl=new Blob([pb],{type:'application/pdf'});
-            var bu=URL.createObjectURL(bl);
-            var aa=document.createElement('a');aa.href=bu;aa.download=(data.docId||'licenca')+'.pdf';
-            document.body.appendChild(aa);aa.click();document.body.removeChild(aa);
-            var fone=(payload.buyerPhone||'').replace(/[^0-9]/g,'');
-            if(fone&&fone.length>=10){
-              var wmsg='Oi '+payload.buyerName+'! Segue a licenca do beat '+payload.beatName+'. Doc: '+(data.docId||'')+' - BeatLicense';
-              setTimeout(function(){
-                if(confirm('PDF baixado! Deseja abrir o WhatsApp para enviar ao comprador?')){
-                  window.open('https://wa.me/55'+fone+'?text='+encodeURIComponent(wmsg),'_blank');
-                }
-              },800);
-            }
-          }catch(e2){console.error('pdf err:',e2);}
-        }
-        document.getElementById('success-msg').textContent = data.mensagem || `Licença enviada para ${payload.buyerEmail} via BeatLicense!`;
-      document.getElementById('form-area').style.display   = 'none';
-      document.getElementById('success-state').classList.add('show');
+      // ── Título licença ──
+      doc.setFillColor(83, 74, 183);
+      doc.rect(ml, 34, pw, 10, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFontSize(11); doc.setFont('helvetica','bold');
+      doc.text('LICENCA ' + licName.toUpperCase(), W/2, 41, {align:'center'});
+
+      // ── Dados do Beat ──
+      doc.setFillColor(247,246,242);
+      doc.rect(ml, 50, pw, 16, 'F');
+      doc.setTextColor(136,136,136); doc.setFontSize(7); doc.setFont('helvetica','normal');
+      doc.text('BEAT', ml+4, 56);
+      doc.setTextColor(26,26,26); doc.setFontSize(13); doc.setFont('helvetica','bold');
+      doc.text(beatName.toUpperCase(), ml+4, 62);
+      doc.setFontSize(8); doc.setFont('helvetica','normal');
+      doc.setTextColor(136,136,136);
+      doc.text('Produzido por ' + producerName, ml+4, 66);
+
+      // ── Partes ──
+      let y = 74;
+      doc.setDrawColor(208,206,200); doc.setLineWidth(0.3);
+      doc.line(ml, y, ml+pw, y); y += 6;
+      doc.setTextColor(136,136,136); doc.setFontSize(7);
+      doc.text('LICENCIANTE (PRODUTOR)', ml, y);
+      doc.text('LICENCIADO (COMPRADOR)', ml+pw/2+4, y);
+      y += 5;
+      doc.setTextColor(26,26,26); doc.setFontSize(10); doc.setFont('helvetica','bold');
+      doc.text(producerName, ml, y);
+      doc.text(buyerName, ml+pw/2+4, y);
+      y += 5;
+      doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(136,136,136);
+      doc.text('Produtor Musical', ml, y);
+      doc.text('CPF: ' + buyerCpf, ml+pw/2+4, y); y += 4;
+      doc.text('', ml, y);
+      doc.text('Email: ' + buyerEmail, ml+pw/2+4, y); y += 4;
+      if(buyerPhone) { doc.text('', ml, y); doc.text('WhatsApp: ' + buyerPhone, ml+pw/2+4, y); y += 4; }
+
+      // ── Valor ──
+      y += 4;
+      doc.line(ml, y, ml+pw, y); y += 6;
+      doc.setTextColor(136,136,136); doc.setFontSize(7);
+      doc.text('FINANCEIRO', ml, y); y += 5;
+      doc.setFillColor(247,246,242);
+      doc.rect(ml, y, pw, 14, 'F');
+      const fmtBRL = v => 'R$ ' + v.toFixed(2).replace('.',',');
+      const tiers = [{max:99,r:0.05},{max:499,r:0.07},{max:999,r:0.09},{max:null,r:0.11}];
+      const tier = tiers.find(t=>t.max===null||priceRaw<=t.max);
+      const fee = priceRaw * tier.r, net = priceRaw - fee;
+      doc.setTextColor(136,136,136); doc.setFontSize(7); doc.setFont('helvetica','normal');
+      doc.text('Valor da licenca', ml+4, y+5);
+      doc.text('Royalty ('+Math.round(tier.r*100)+'%)', ml+pw/3+4, y+5);
+      doc.text('Valor liquido', ml+2*pw/3+4, y+5);
+      doc.setTextColor(26,26,26); doc.setFontSize(12); doc.setFont('helvetica','bold');
+      doc.text(fmtBRL(priceRaw), ml+4, y+11);
+      doc.setFontSize(10);
+      doc.text(fmtBRL(fee), ml+pw/3+4, y+11);
+      doc.text(fmtBRL(net), ml+2*pw/3+4, y+11);
+      y += 20;
+
+      // ── Termos ──
+      doc.line(ml, y, ml+pw, y); y += 6;
+      doc.setTextColor(136,136,136); doc.setFontSize(7); doc.setFont('helvetica','normal');
+      doc.text('TERMOS DA LICENCA', ml, y); y += 5;
+      const limites = {basic:'Distribuicao limitada a 50.000 streams. Proibido publicidade paga.', premium:'Distribuicao limitada a 500.000 streams. Redes sociais liberadas.', exclusive:'Uso ilimitado em todos os territorios.'};
+      doc.setTextColor(26,26,26); doc.setFontSize(9);
+      doc.text(limites[selLic]||limites.basic, ml, y, {maxWidth:pw}); y += 8;
+      doc.setTextColor(136,136,136); doc.setFontSize(8);
+      const termos = 'O licenciado ' + buyerName + ' (CPF: ' + buyerCpf + ') adquire os direitos de uso do beat "' + beatName + '" conforme os termos acima. Valido a partir de ' + hoje + '.';
+      doc.text(termos, ml, y, {maxWidth:pw}); y += 16;
+
+      // ── Assinaturas ──
+      doc.line(ml, y, ml+pw/2-4, y);
+      doc.line(ml+pw/2+4, y, ml+pw, y);
+      y += 3;
+      // Assinatura do produtor em itálico roxo
+      doc.setTextColor(83,74,183); doc.setFontSize(14); doc.setFont('helvetica','italic');
+      doc.text(producerName, ml + (pw/2-4)/2, y+4, {align:'center'});
+      doc.setTextColor(136,136,136); doc.setFontSize(7); doc.setFont('helvetica','normal');
+      doc.text(producerName.toUpperCase(), ml + (pw/2-4)/2, y+9, {align:'center'});
+      doc.text('LICENCIANTE', ml + (pw/2-4)/2, y+13, {align:'center'});
+      doc.text('Assinatura do Licenciado', ml+pw/2+4 + (pw/2-4)/2, y+9, {align:'center'});
+      doc.text('LICENCIADO', ml+pw/2+4 + (pw/2-4)/2, y+13, {align:'center'});
+      y += 18;
+
+      // ── Rodapé ──
+      doc.line(ml, y, ml+pw, y); y += 4;
+      doc.setTextColor(136,136,136); doc.setFontSize(7);
+      doc.text('Gerado por BeatLicense • beatlicense.com.br • ' + docId, W/2, y, {align:'center'});
+
+      // ── Salva ──
+      doc.save(docId + '.pdf');
+
+      // Salva no histórico local
+      const e = {docId, beatName, buyerName, buyerEmail, licenseType:selLic, price:priceRaw, date:new Date().toISOString(), status:'generated'};
+      history_arr.unshift(e);
+      localStorage.setItem('bl-hist', JSON.stringify(history_arr));
+      renderLicencas();
+      form.reset();
+      setLic('basic');
+      toast('PDF gerado e baixado! Doc: ' + docId, 'ok');
 
     } catch(err) {
-      showToast(err.message, 'error');
-      btn.disabled = false;
+      console.error(err);
+      toast('Erro ao gerar PDF: ' + err.message, 'err');
     } finally {
-      btn.classList.remove('loading');
+      btn.disabled = false;
+      btn.innerHTML = 'Gerar licença →';
     }
   }
 

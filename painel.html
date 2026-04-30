@@ -1043,6 +1043,7 @@
   let selectedLic = 'basic';
   let history = JSON.parse(localStorage.getItem('bl-hist') || '[]');
   let config  = JSON.parse(localStorage.getItem('bl-cfg')  || '{}');
+  if (!config.api) config.api = 'https://beatlicense-backend-production.up.railway.app';
 
   // ── INIT ────────────────────────────────────
   function init() {
